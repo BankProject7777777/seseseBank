@@ -16,7 +16,15 @@ public class DepositViewYJ {
             System.out.printf("\n              sesese-bank 와 [ %s일 째 ]🫧\n", user.getDayCount());
 
             System.out.printf(" ✦ 나의 적금계좌 잔액 [%d]원 \n\n", getInstance().getSavingAccountBalance(user));
-            System.out.printf(" ♦︎ 매달 [%d 원] 적금하고 있어요 \n\n", CreateAccountLJH.createSaving(user));
+
+        MySavingCreationCallback callback = new MySavingCreationCallback();
+
+        CreateAccountLJH.createSaving(user, callback);
+
+        long initialSavingBalance = callback.getInitialSavingBalance();
+
+        System.out.printf(" ♦︎ 매달 [%d 원] 적금하고 있어요 \n\n", initialSavingBalance);
+
             //user 값이 만들어졌을때 변수 선언해서 그거 걍 매달 더하셈 어우 귀차나
             System.out.println(" ✧ 나의 적금계좌 이율 [ 1 % ] \n");
             System.out.println("(하루, 삼일이 지날때마다 이율은 중복으로 계산됩니다.)\n");

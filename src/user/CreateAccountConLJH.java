@@ -64,8 +64,11 @@ public class CreateAccountConLJH extends Account {
                             System.out.println("숫자를 입력해주세요");
                         }
                         if (saving == 1) {
+                            // SavingCreationCallback 객체 생성
+                            MySavingCreationCallback callback = new MySavingCreationCallback();
+
                             System.out.println("\n적금 계좌를 생성합니다.");
-                            createSaving(user);
+                            createSaving(user, callback);
                             break;
                         } else if (saving == 2) {
                             System.out.println("이전 메뉴로 돌아갑니다.");

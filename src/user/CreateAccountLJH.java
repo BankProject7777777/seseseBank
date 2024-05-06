@@ -138,7 +138,7 @@ public class CreateAccountLJH extends Account  {
         }
     }
 
-    public static void createSaving(User user) throws InterruptedException {
+    public static void createSaving(User user,SavingCreationCallback callback) throws InterruptedException {
         long initialSavingBalance = 0;
         try {
             if (userHasAccountOfType(user, AccountType.SAVING)) {
@@ -184,7 +184,9 @@ public class CreateAccountLJH extends Account  {
                     savingAccount.setBalance(firstDepositSav);
                     // 적금 계좌 생성 후 잔액 설정
                     initialSavingBalance = savingAccount.getBalance();
-                    return initialSavingBalance;
+                    //콜백 실행
+                    callback.onSavingCreated(initialSavingBalance);
+
 
                     try {
                         System.out.println(".");

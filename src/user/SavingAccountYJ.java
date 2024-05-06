@@ -30,19 +30,26 @@ static void userSavingAccount(User user) throws InterruptedException {
 
         //한달주기 자동이체적금
         if ((user.getDayCount() != 0) && (user.getDayCount() % 3 == 0)) { //3일 (한달)이 지났는가?, 맨 처음엔 하루가 지나지 않았으므로 실행
-            if (CreateAccountLJH.createSaving(user) <= transferBalance) {
 
-                transferBalance -= CreateAccountLJH.createSaving(user);
+            MySavingCreationCallback callback = new MySavingCreationCallback();
+
+            CreateAccountLJH.createSaving(user, callback);
+
+            long initialSavingBalance = callback.getInitialSavingBalance();
+
+            if (initialSavingBalance <= transferBalance) {
+
+                transferBalance -= initialSavingBalance;
                 //입출금계좌 업데이트
                 AccountBalanceAccessorYJ.getInstance().setTransferAccountBalance(user,transferBalance);
 
                 // 입출금계좌에서 적금계좌로 일정금액 송금기능
-                savingBalance += CreateAccountLJH.createSaving(user);
+                savingBalance += initialSavingBalance;
                 // 적금계좌 업데이트
                 AccountBalanceAccessorYJ.getInstance().setSavingAccountBalance(user, savingBalance);
 
                 System.out.print("\n              ∙▫︎ ☐ □ ・                \n");
-                System.out.printf(" \n ◇ 매달 적금 자동이체 시스템으로 \n입출금계좌에서 적금계좌로 %d 원이 이체되었습니다. \n ", CreateAccountLJH.createSaving(user));
+                System.out.printf(" \n ◇ 매달 적금 자동이체 시스템으로 \n입출금계좌에서 적금계좌로 %d 원이 이체되었습니다. \n ", initialSavingBalance);
                 System.out.printf(" ◆ 현재 적금계좌 잔액 [%d 원] \n", savingBalance);
                 System.out.printf(" ◆ 현재 입출금계좌 잔액 [%d 원] \n", transferBalance);
                 System.out.print("\n              ∙▫︎ ☐ □ ・                \n");
